@@ -1,0 +1,15 @@
+use_frameworks!
+
+platform :ios, '8.0'
+
+source 'https://github.com/CocoaPods/Specs.git'
+
+target 'PSPhotos_Example' do
+  pod 'PSPhotos', :path => '../'
+
+  target 'PSPhotos_Tests' do
+    inherit! :search_paths
+
+    pod 'FBSnapshotTestCase'
+  end
+end

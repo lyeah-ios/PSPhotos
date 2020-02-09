@@ -1,0 +1,6 @@
+framework module PSPhotos {
+  umbrella header "PSPhotos-umbrella.h"
+
+  export *
+  module * { export * }
+}
