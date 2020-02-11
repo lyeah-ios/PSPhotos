@@ -2,7 +2,7 @@
   "name": "PSPhotos",
   "version": "0.1.0",
   "summary": "PSPhotos makes it easier to use Photos.framework to read and store images or videos.",
-  "homepage": "https://github.com/zisulu/PSPhotos",
+  "homepage": "https://github.com/lyeah-ios/PSPhotos",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
@@ -11,7 +11,7 @@
     "zisu": "zisulwl@163.com"
   },
   "source": {
-    "git": "https://github.com/zisulu/PSPhotos.git",
+    "git": "https://github.com/lyeah-ios/PSPhotos.git",
     "tag": "0.1.0"
   },
   "platforms": {
