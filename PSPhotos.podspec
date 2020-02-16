@@ -11,10 +11,10 @@ Pod::Spec.new do |s|
   s.version          = '0.1.0'
   s.summary          = 'PSPhotos makes it easier to use Photos.framework to read and store images or videos.'
 
-  s.homepage         = 'https://github.com/lyeah-ios/PSPhotos'
+  s.homepage         = 'https://github.com/zisulu/PSPhotos'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'zisu' => 'zisulwl@163.com' }
-  s.source           = { :git => 'https://github.com/lyeah-ios/PSPhotos.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/zisulu/PSPhotos.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '8.0'
 
