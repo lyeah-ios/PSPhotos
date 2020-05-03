@@ -4,7 +4,7 @@ PODS:
   - FBSnapshotTestCase/Core (2.1.4)
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
-  - PSPhotos (0.1.0)
+  - PSPhotos (0.2.0)
 
 DEPENDENCIES:
   - FBSnapshotTestCase
@@ -20,8 +20,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
-  PSPhotos: 64abf89f6aa06b4602b2e0b9ddf5957791ff50e3
+  PSPhotos: 4da941e74f662fe83d71a7bc00e00a8b776525e4
 
-PODFILE CHECKSUM: 55e7bd63ec4042fc1fb44d576bda56f1651519a2
+PODFILE CHECKSUM: 225d2d629e4d78173b56a76693b079cb6d454218
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1

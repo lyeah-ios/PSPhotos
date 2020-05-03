@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'PSPhotos'
-  s.version          = '0.1.0'
+  s.version          = '0.2.0'
   s.summary          = 'PSPhotos makes it easier to use Photos.framework to read and store images or videos.'
 
   s.homepage         = 'https://github.com/zisulu/PSPhotos'
@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.author           = { 'zisu' => 'zisulwl@163.com' }
   s.source           = { :git => 'https://github.com/zisulu/PSPhotos.git', :tag => s.version.to_s }
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
 
   s.source_files = 'PSPhotos/Classes/**/*'
 

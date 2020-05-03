@@ -227,22 +227,14 @@ static NSString *const kPhotosServiceDefaultCacheDirectory = @"PSPhotos";
     __block NSString *assetLocalIdentifier = nil;
     __weak typeof(self)wself = self;
     [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-        //图片会先保存到相机胶卷
-        if (@available(iOS 9, *)) {
-            NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
-            PHAssetResourceCreationOptions *options = [[PHAssetResourceCreationOptions alloc] init];
-            options.shouldMoveFile = YES;
-            PHAssetCreationRequest *creationRequest = [PHAssetCreationRequest creationRequestForAsset];
-            [creationRequest addResourceWithType:PHAssetResourceTypePhoto data:imageData options:options];
-            creationRequest.creationDate = [NSDate date];
-            PHObjectPlaceholder *placeholderAsset = creationRequest.placeholderForCreatedAsset;
-            assetLocalIdentifier = placeholderAsset.localIdentifier;
-        } else {
-            PHAssetChangeRequest *changeRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:image];
-            changeRequest.creationDate = [NSDate date];
-            PHObjectPlaceholder *placeholderAsset = changeRequest.placeholderForCreatedAsset;
-            assetLocalIdentifier = placeholderAsset.localIdentifier;
-        }
+        /// 图片会先保存到相机胶卷
+        NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
+        PHAssetResourceCreationOptions *options = [[PHAssetResourceCreationOptions alloc] init];
+        PHAssetCreationRequest *creationRequest = [PHAssetCreationRequest creationRequestForAsset];
+        [creationRequest addResourceWithType:PHAssetResourceTypePhoto data:imageData options:options];
+        creationRequest.creationDate = [NSDate date];
+        PHObjectPlaceholder *placeholderAsset = creationRequest.placeholderForCreatedAsset;
+        assetLocalIdentifier = placeholderAsset.localIdentifier;
     } completionHandler:^(BOOL success, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {
@@ -304,71 +296,36 @@ static NSString *const kPhotosServiceDefaultCacheDirectory = @"PSPhotos";
 + (void)_saveImageData:(NSData *)imageData isGIF:(BOOL)isGIF toAlbum:(NSString *)albumName onCompletion:(void (^)(NSError *_Nullable))completion
 {
     __weak typeof(self)wself = self;
-    if (@available(iOS 9, *)) {
-        __block NSString *assetLocalIdentifier = nil;
-        [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-            PHAssetCreationRequest *assetCreationRequest = [PHAssetCreationRequest creationRequestForAsset];
-            [assetCreationRequest addResourceWithType:PHAssetResourceTypePhoto data:imageData options:nil];
-            PHObjectPlaceholder *placeholderAsset = assetCreationRequest.placeholderForCreatedAsset;
-            assetLocalIdentifier = placeholderAsset.localIdentifier;
-        } completionHandler:^(BOOL success, NSError *error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (success) {
-                    [wself doAfterSaveSuccess:assetLocalIdentifier toAlbum:albumName onCompletion:^{
-                        if (completion) {
-                            completion(nil);
-                        }
-                    }];
-                } else {
-                    //保存失败
+    __block NSString *assetLocalIdentifier = nil;
+    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+        PHAssetCreationRequest *assetCreationRequest = [PHAssetCreationRequest creationRequestForAsset];
+        [assetCreationRequest addResourceWithType:PHAssetResourceTypePhoto data:imageData options:nil];
+        PHObjectPlaceholder *placeholderAsset = assetCreationRequest.placeholderForCreatedAsset;
+        assetLocalIdentifier = placeholderAsset.localIdentifier;
+    } completionHandler:^(BOOL success, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (success) {
+                [wself doAfterSaveSuccess:assetLocalIdentifier toAlbum:albumName onCompletion:^{
                     if (completion) {
-                        NSString *errorMessage = error.localizedFailureReason;
-                        if (errorMessage.length == 0) {
-                            errorMessage = @"图片保存失败";
-                        }
-                        NSError *error = [NSError errorWithDomain:PSErrorDomain code:PSErrorCodeSaveFailed userInfo:@{
-                            NSLocalizedDescriptionKey : errorMessage,
-                            NSLocalizedFailureReasonErrorKey : errorMessage,
-                        }];
-                        completion(error);
+                        completion(nil);
                     }
-                }
-            });
-        }];
-    } else {
-        NSString *extension = isGIF ? @"gif" : @"png";
-        NSString *tempName = [NSString stringWithFormat:@"%@.%@", [self uniqueRandomFileName], extension];
-        NSString *tempPath = [[PhotosService service].cacheDirectory stringByAppendingPathComponent:tempName];
-        NSURL *tempURL = [NSURL fileURLWithPath:tempPath];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSError *aError = nil;
-            [imageData writeToURL:tempURL options:NSDataWritingAtomic error:&aError];
-            dispatch_sync(dispatch_get_main_queue(), ^{
-                if (!aError) {
-                    [wself saveImageWithURL:tempURL toAlbum:albumName onCompletion:^(NSError *_Nonnull error) {
-                        //移除临时数据
-                        [[NSFileManager defaultManager] removeItemAtURL:tempURL error:nil];
-                        if (completion) {
-                            completion(error);
-                        }
+                }];
+            } else {
+                //保存失败
+                if (completion) {
+                    NSString *errorMessage = error.localizedFailureReason;
+                    if (errorMessage.length == 0) {
+                        errorMessage = @"图片保存失败";
+                    }
+                    NSError *error = [NSError errorWithDomain:PSErrorDomain code:PSErrorCodeSaveFailed userInfo:@{
+                        NSLocalizedDescriptionKey : errorMessage,
+                        NSLocalizedFailureReasonErrorKey : errorMessage,
                     }];
-                } else {
-                    //保存失败
-                    if (completion) {
-                        NSString *errorMessage = aError.localizedFailureReason;
-                        if (errorMessage.length == 0) {
-                            errorMessage = @"图片保存失败";
-                        }
-                        NSError *error = [NSError errorWithDomain:PSErrorDomain code:PSErrorCodeSaveFailed userInfo:@{
-                            NSLocalizedDescriptionKey : errorMessage,
-                            NSLocalizedFailureReasonErrorKey : errorMessage,
-                        }];
-                        completion(error);
-                    }
+                    completion(error);
                 }
-            });
+            }
         });
-    }
+    }];
 }
 
 + (void)saveImageWithURL:(NSURL *)fileURL toAlbum:(NSString *_Nullable)albumName onCompletion:(void (^ _Nullable)(NSError *_Nullable))completion
@@ -444,6 +401,11 @@ static NSString *const kPhotosServiceDefaultCacheDirectory = @"PSPhotos";
 
 + (void)saveVideoWithURL:(NSURL *)fileURL toAlbum:(NSString *_Nullable)albumName onCompletion:(void (^ _Nullable)(NSError *_Nullable))completion
 {
+    [self saveVideoWithURL:fileURL shouldMoveFile:NO toAlbum:albumName onCompletion:completion];
+}
+
++ (void)saveVideoWithURL:(NSURL *)fileURL shouldMoveFile:(BOOL)shouldMoveFile toAlbum:(NSString *)albumName onCompletion:(void (^)(NSError * _Nullable))completion
+{
     if (!fileURL) {
         NSString *errorMessage = @"无效的视频格式";
         NSError *error = [NSError errorWithDomain:PSErrorDomain code:PSErrorCodeInvalid userInfo:@{
@@ -458,7 +420,7 @@ static NSString *const kPhotosServiceDefaultCacheDirectory = @"PSPhotos";
     /// request authorization
     [self requestAuthorization:^(PHAuthorizationStatus status) {
         if (status == PHAuthorizationStatusAuthorized) {
-            [self _saveVideoWithURL:fileURL toAlbum:albumName onCompletion:completion];
+            [self _saveVideoWithURL:fileURL shouldMoveFile:shouldMoveFile toAlbum:albumName onCompletion:completion];
         } else if (status == PHAuthorizationStatusNotDetermined) {
             /// wait user authorized.
         } else {
@@ -474,25 +436,18 @@ static NSString *const kPhotosServiceDefaultCacheDirectory = @"PSPhotos";
     }];
 }
 
-+ (void)_saveVideoWithURL:(NSURL *)fileURL toAlbum:(NSString *)albumName onCompletion:(void (^)(NSError *_Nullable))completion
++ (void)_saveVideoWithURL:(NSURL *)fileURL shouldMoveFile:(BOOL)shouldMoveFile toAlbum:(NSString *)albumName onCompletion:(void (^)(NSError *_Nullable))completion
 {
     __block NSString *assetLocalIdentifier = nil;
     __weak typeof(self)wself = self;
     [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
-        if (@available(iOS 9, *)) {
-            PHAssetResourceCreationOptions *options = [[PHAssetResourceCreationOptions alloc] init];
-            options.shouldMoveFile = YES;
-            PHAssetCreationRequest *creationRequest = [PHAssetCreationRequest creationRequestForAsset];
-            [creationRequest addResourceWithType:PHAssetResourceTypeVideo fileURL:fileURL options:options];
-            creationRequest.creationDate = [NSDate date];
-            PHObjectPlaceholder *placeholderAsset = creationRequest.placeholderForCreatedAsset;
-            assetLocalIdentifier = placeholderAsset.localIdentifier;
-        } else {
-            PHAssetChangeRequest *changeRequest = [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:fileURL];
-            changeRequest.creationDate = [NSDate date];
-            PHObjectPlaceholder *placeholderAsset = changeRequest.placeholderForCreatedAsset;
-            assetLocalIdentifier = placeholderAsset.localIdentifier;
-        }
+        PHAssetResourceCreationOptions *options = [[PHAssetResourceCreationOptions alloc] init];
+        options.shouldMoveFile = shouldMoveFile;
+        PHAssetCreationRequest *creationRequest = [PHAssetCreationRequest creationRequestForAsset];
+        [creationRequest addResourceWithType:PHAssetResourceTypeVideo fileURL:fileURL options:options];
+        creationRequest.creationDate = [NSDate date];
+        PHObjectPlaceholder *placeholderAsset = creationRequest.placeholderForCreatedAsset;
+        assetLocalIdentifier = placeholderAsset.localIdentifier;
     } completionHandler:^(BOOL success, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {
@@ -502,7 +457,7 @@ static NSString *const kPhotosServiceDefaultCacheDirectory = @"PSPhotos";
                     }
                 }];
             } else {
-                //保存失败
+                /// 保存失败
                 if (completion) {
                     NSString *errorMessage = error.localizedFailureReason;
                     if (errorMessage.length == 0) {

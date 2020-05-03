@@ -72,13 +72,23 @@ FOUNDATION_EXPORT NSString * const PSPhotoLibraryUsageDescriptionKey;
 @interface PhotosService (Video)
 
 /**
- 保存视频到指定相册，如果指定相册创建失败，则直接保存到系统相册
+ 拷贝视频保存到指定相册，如果指定相册创建失败，则直接保存到系统相册
  
  @param fileURL 视频的沙盒路径
  @param albumName 相册名称，不传则只保存到相机胶卷
  @param completion 完成
  */
 + (void)saveVideoWithURL:(NSURL *)fileURL toAlbum:(NSString *__nullable)albumName onCompletion:(void (^__nullable)(NSError *__nullable error))completion;
+
+/**
+ 保存视频到指定相册，如果指定相册创建失败，则直接保存到系统相册
+
+ @param fileURL 视频的沙盒路径
+ @param shouldMoveFile 移动视频而非拷贝
+ @param albumName 相册名称，不传则只保存到相机胶卷
+ @param completion 完成
+*/
++ (void)saveVideoWithURL:(NSURL *)fileURL shouldMoveFile:(BOOL)shouldMoveFile toAlbum:(NSString *__nullable)albumName onCompletion:(void (^__nullable)(NSError *__nullable error))completion;
 
 @end
 
