@@ -24,11 +24,11 @@
                 success(exportSession, exportSession.outputURL);
             }
         } else if (status == AVAssetExportSessionStatusWaiting) {
-            NSLog(@"视频准备导出...");
+            PSLog(@"视频准备导出...");
         } else if (status == AVAssetExportSessionStatusExporting) {
-            NSLog(@"视频正在导出...");
+            PSLog(@"视频正在导出...");
         } else if (status == AVAssetExportSessionStatusCancelled) {
-            NSLog(@"视频导出取消...");
+            PSLog(@"视频导出取消...");
         } else {
             if (failure) {
                 NSError *error = exportSession.error;

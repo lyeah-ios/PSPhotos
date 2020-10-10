@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  UTI
  */
-- (NSString *)ps_UTIString;
+- (nullable NSString *)ps_UTIString;
 
 /**
  获取指定大小的图片，可能会请求网络

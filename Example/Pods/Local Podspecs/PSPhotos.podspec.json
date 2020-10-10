@@ -17,12 +17,33 @@
   "platforms": {
     "ios": "9.0"
   },
-  "source_files": "PSPhotos/Classes/**/*",
+  "requires_arc": true,
   "frameworks": [
-    "UIKit",
     "Foundation",
-    "AVFoundation",
-    "Photos",
-    "CoreServices"
+    "UIKit"
+  ],
+  "default_subspecs": "Photos",
+  "subspecs": [
+    {
+      "name": "Photos",
+      "source_files": "PSPhotos/Photos/*.{h,m}",
+      "frameworks": [
+        "Photos",
+        "CoreServices"
+      ]
+    },
+    {
+      "name": "AVFoundation",
+      "source_files": "PSPhotos/AVFoundation/*.{h,m}",
+      "dependencies": {
+        "PSPhotos/Photos": [
+
+        ]
+      },
+      "frameworks": [
+        "AVFoundation",
+        "MediaPlayer"
+      ]
+    }
   ]
 }

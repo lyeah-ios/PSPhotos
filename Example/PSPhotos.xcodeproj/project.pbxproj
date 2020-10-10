@@ -207,7 +207,7 @@
 				6003F586195388D20070C39A /* Sources */,
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
-				DE372226554286E4E13D4272 /* [CP] Embed Pods Frameworks */,
+				7C70DCD39F022061C201F35E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -361,7 +361,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PSPhotos_Tests/Pods-PSPhotos_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DE372226554286E4E13D4272 /* [CP] Embed Pods Frameworks */ = {
+		7C70DCD39F022061C201F35E /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (

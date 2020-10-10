@@ -5,7 +5,8 @@ platform :ios, '9.0'
 source 'https://github.com/CocoaPods/Specs.git'
 
 target 'PSPhotos_Example' do
-  pod 'PSPhotos', :path => '../'
+  pod 'PSPhotos/Photos', :path => '../'
+  pod 'PSPhotos/AVFoundation', :path => '../'
 
   target 'PSPhotos_Tests' do
     inherit! :search_paths

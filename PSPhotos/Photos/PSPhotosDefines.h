@@ -25,10 +25,12 @@ typedef NS_ENUM(NSUInteger, PSMediaType) {
     PSMediaTypeVideo   = PHAssetMediaTypeVideo,
 };
 
+#ifndef PSLog
 #ifdef DEBUG
-#define PSLog(format,...) NSLog(@"%s(line %d): " format, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define PSLog(format,...) NSLog(@"%s(Line %d): " format, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 #else
 #define PSLog(format,...) do{}while(0)
+#endif
 #endif
 
 #endif /* PSPhotosDefines_h */

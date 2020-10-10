@@ -17,8 +17,24 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/zisulu/PSPhotos.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '9.0'
-
-  s.source_files = 'PSPhotos/Classes/**/*'
-
-  s.frameworks = 'UIKit', 'Foundation', 'AVFoundation', 'Photos', 'CoreServices'
+  s.requires_arc     = true
+  s.frameworks       = 'Foundation', 'UIKit'
+  s.default_subspec  = 'Photos'
+  
+  # Photos
+  s.subspec 'Photos' do |ss|
+    ss.source_files = 'PSPhotos/Photos/*.{h,m}'
+    ss.frameworks = 'Photos', 'CoreServices'
+    
+  end
+  
+  # AVFoundation
+  s.subspec 'AVFoundation' do |ss|
+    ss.source_files = 'PSPhotos/AVFoundation/*.{h,m}'
+    
+    ss.dependency 'PSPhotos/Photos'
+    ss.frameworks = 'AVFoundation', 'MediaPlayer'
+    
+  end
+  
 end
