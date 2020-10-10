@@ -7,6 +7,7 @@
 //
 
 #import "PHAsset+PSExtends.h"
+#import "PSDefines.h"
 #import "PSPhotosDefines.h"
 #import "PhotosService.h"
 #import "PHImageManager+PSExtends.h"

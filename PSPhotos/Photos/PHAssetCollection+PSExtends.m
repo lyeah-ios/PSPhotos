@@ -33,7 +33,7 @@
     PHFetchResult<PHAssetCollection *> *syncedAlbums              = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumSyncedAlbum options:nil];
     PHFetchResult<PHAssetCollection *> *importedAlbums            = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumImported options:nil];
     PHFetchResult<PHAssetCollection *> *sharedAlbums              = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumCloudShared options:nil];
-    PHFetchResult<PHCollection *> *userAlbums                     = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];//用户自己创建的相册
+    PHFetchResult<PHCollection *> *userAlbums                     = [PHCollectionList fetchTopLevelUserCollectionsWithOptions:nil];/// 用户自己创建的相册
     NSArray *allAlbums = @[
                            smartAlbums,
                            streamAlbums,

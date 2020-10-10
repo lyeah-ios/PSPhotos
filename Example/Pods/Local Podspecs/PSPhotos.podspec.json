@@ -1,6 +1,6 @@
 {
   "name": "PSPhotos",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "summary": "PSPhotos makes it easier to use Photos.framework to read and store images or videos.",
   "homepage": "https://github.com/zisulu/PSPhotos",
   "license": {
@@ -12,7 +12,7 @@
   },
   "source": {
     "git": "https://github.com/zisulu/PSPhotos.git",
-    "tag": "0.2.0"
+    "tag": "0.3.0"
   },
   "platforms": {
     "ios": "9.0"
@@ -26,7 +26,15 @@
   "subspecs": [
     {
       "name": "Photos",
-      "source_files": "PSPhotos/Photos/*.{h,m}",
+      "source_files": [
+        "PSPhotos/Photos/*.{h,m}",
+        "PSPhotos/PSDefines.h"
+      ],
+      "dependencies": {
+        "PSPhotos/AVMedia": [
+
+        ]
+      },
       "frameworks": [
         "Photos",
         "CoreServices"
@@ -34,12 +42,10 @@
     },
     {
       "name": "AVMedia",
-      "source_files": "PSPhotos/AVFoundation/*.{h,m}",
-      "dependencies": {
-        "PSPhotos/Photos": [
-
-        ]
-      },
+      "source_files": [
+        "PSPhotos/AVMedia/*.{h,m}",
+        "PSPhotos/PSDefines.h"
+      ],
       "frameworks": [
         "AVFoundation",
         "MediaPlayer"

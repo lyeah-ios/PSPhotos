@@ -1,7 +1,7 @@
 PODS:
-  - PSPhotos/AVMedia (0.2.0):
-    - PSPhotos/Photos
-  - PSPhotos/Photos (0.2.0)
+  - PSPhotos/AVMedia (0.3.0)
+  - PSPhotos/Photos (0.3.0):
+    - PSPhotos/AVMedia
 
 DEPENDENCIES:
   - PSPhotos/AVMedia (from `../`)
@@ -12,7 +12,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  PSPhotos: 36b8bf831cc34000e6e0871a2206d99e0c79b9da
+  PSPhotos: dee27072651f17f795c2be2f8f149005f457ba26
 
 PODFILE CHECKSUM: 0e40e52fc41e0cb5e56feb82a7edfc8e7d4cba29
 

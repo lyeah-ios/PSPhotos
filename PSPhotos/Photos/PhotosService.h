@@ -19,65 +19,51 @@ FOUNDATION_EXPORT NSString * const PSPhotoLibraryUsageDescriptionKey;
 
 @interface PhotosService : NSObject
 
-/**
- 临时文件存储目录，不设置默认存在NSTemporaryDirectory()
- */
+/// 临时文件存储目录，不设置默认存在NSTemporaryDirectory()
 @property (nonatomic, copy) NSString *cacheDirectory;
 
 + (PhotosService *)service;
 
-/**
- 随机生成的文件名，尽量保证不重复，由当前时间戳+随机数组合而成
- */
+/// 随机生成的文件名，尽量保证不重复，由当前时间戳+随机数组合而成
 + (NSString *)uniqueRandomFileName;
 
+/// 请求相册权限
 + (void)requestAuthorization:(void(^)(PHAuthorizationStatus status))handler;
 
+/// 清除内部缓存
 + (void)clearCaches;
 
 @end
 
 @interface PhotosService (Photo)
 
-/**
- 保存图片到指定相册，如果指定相册创建失败，则直接保存到系统相册
- 
- @param image 图片
- @param albumName 相册名称，不传则只保存到相机胶卷
- @param completion 完成
- */
+/// 保存图片到指定相册，如果指定相册创建失败，则直接保存到系统相册
+/// @param image 图片
+/// @param albumName 相册名称，不传则只保存到相机胶卷
+/// @param completion 完成
 + (void)saveImage:(UIImage *)image toAlbum:(NSString *__nullable)albumName onCompletion:(void (^__nullable)(NSError *__nullable error))completion;
 
-/**
- 保存图片到指定相册，如果指定相册创建失败，则直接保存到系统相册
- 
- @param imageData 图片元数据
- @param isGIF 是否为GIF
- @param albumName 相册名称，不传则只保存到相机胶卷
- @param completion 完成
- */
+/// 保存图片到指定相册，如果指定相册创建失败，则直接保存到系统相册
+/// @param imageData 图片元数据
+/// @param isGIF 是否为GIF
+/// @param albumName 相册名称，不传则只保存到相机胶卷
+/// @param completion 完成
 + (void)saveImageData:(NSData *)imageData isGIF:(BOOL)isGIF toAlbum:(NSString *__nullable)albumName onCompletion:(void (^__nullable)(NSError *__nullable error))completion;
 
-/**
- 保存图片到指定相册，如果指定相册创建失败，则直接保存到系统相册
- 
- @param fileURL 图片的沙盒路径
- @param albumName 相册名称，不传则只保存到相机胶卷
- @param completion 完成
- */
+/// 保存图片到指定相册，如果指定相册创建失败，则直接保存到系统相册
+/// @param fileURL 图片的沙盒路径
+/// @param albumName 相册名称，不传则只保存到相机胶卷
+/// @param completion 完成
 + (void)saveImageWithURL:(NSURL *)fileURL toAlbum:(NSString *__nullable)albumName onCompletion:(void (^__nullable)(NSError *__nullable error))completion;
 
 @end
 
 @interface PhotosService (Video)
 
-/**
- 拷贝视频保存到指定相册，如果指定相册创建失败，则直接保存到系统相册
- 
- @param fileURL 视频的沙盒路径
- @param albumName 相册名称，不传则只保存到相机胶卷
- @param completion 完成
- */
+/// 保存视频到指定相册，如果指定相册创建失败，则直接保存到系统相册
+/// @param fileURL 视频的沙盒路径
+/// @param albumName 相册名称，不传则只保存到相机胶卷
+/// @param completion 完成
 + (void)saveVideoWithURL:(NSURL *)fileURL toAlbum:(NSString *__nullable)albumName onCompletion:(void (^__nullable)(NSError *__nullable error))completion;
 
 /**
@@ -95,18 +81,15 @@ FOUNDATION_EXPORT NSString * const PSPhotoLibraryUsageDescriptionKey;
 @interface PhotosService (System)
 
 + (BOOL)ps_isAlbumAuthorized;
++ (BOOL)ps_isAlbumLimited;
 + (PHAuthorizationStatus)ps_albumAuthorizationStatus;
 + (BOOL)ps_isCameraAuthorized;
 + (AVAuthorizationStatus)ps_cameraAuthorizationStatus;
 
-/**
- info.plist
- */
+/// info.plist
 + (NSDictionary *)ps_infoDictionary;
 
-/**
- 手机设置
- */
+/// 去手机设置
 + (void)ps_openPhoneSettings;
 
 @end

@@ -56,9 +56,9 @@
     if (!self.outputURL) {
         NSString *errorMessage = @"Output URL not set!";
         _error = [NSError errorWithDomain:AVFoundationErrorDomain code:AVErrorExportFailed userInfo:@{
-                                                                                                      NSLocalizedDescriptionKey : errorMessage,
-                                                                                                      NSLocalizedFailureReasonErrorKey : errorMessage,
-                                                                                                      }];
+            NSLocalizedDescriptionKey : errorMessage,
+            NSLocalizedFailureReasonErrorKey : errorMessage,
+        }];
         handler();
         return;
     }
@@ -123,12 +123,12 @@
                 pixelFormat = @(kCVPixelFormatType_32BGRA);
             }
             NSDictionary *pixelBufferAttributes = @{
-                                                    (__bridge NSString *)kCVPixelBufferPixelFormatTypeKey       : pixelFormat,
-                                                    (__bridge NSString *)kCVPixelBufferWidthKey                 : @(self.videoOutput.videoComposition.renderSize.width),
-                                                    (__bridge NSString *)kCVPixelBufferHeightKey                : @(self.videoOutput.videoComposition.renderSize.height),
-                                                    @"IOSurfaceOpenGLESTextureCompatibility"                    : @YES,
-                                                    @"IOSurfaceOpenGLESFBOCompatibility"                        : @YES,
-                                                    };
+                (__bridge NSString *)kCVPixelBufferPixelFormatTypeKey       : pixelFormat,
+                (__bridge NSString *)kCVPixelBufferWidthKey                 : @(self.videoOutput.videoComposition.renderSize.width),
+                (__bridge NSString *)kCVPixelBufferHeightKey                : @(self.videoOutput.videoComposition.renderSize.height),
+                @"IOSurfaceOpenGLESTextureCompatibility"                    : @YES,
+                @"IOSurfaceOpenGLESFBOCompatibility"                        : @YES,
+            };
             self.videoPixelBufferAdaptor = [AVAssetWriterInputPixelBufferAdaptor assetWriterInputPixelBufferAdaptorWithAssetWriterInput:self.videoInput sourcePixelBufferAttributes:pixelBufferAttributes];
         }
     }

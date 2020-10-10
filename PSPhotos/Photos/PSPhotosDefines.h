@@ -11,26 +11,10 @@
 
 #import <Photos/Photos.h>
 
-typedef NS_ENUM(NSUInteger, PSErrorCode) {
-    PSErrorCodeInvalid = 0,
-    PSErrorCodeSyncFailed,          /// iCloud同步失败
-    PSErrorCodeSaveFailed,          /// 保存失败
-    PSErrorCodeSaveUnauthorized,    /// 相册保存未授权
-    PSErrorCodeExportFailed,        /// 导出失败
-};
-
 typedef NS_ENUM(NSUInteger, PSMediaType) {
-    PSMediaTypeAll     = 0,                         //PHAssetMediaTypeImage + PHAssetMediaTypeVideo
+    PSMediaTypeAll     = 0,                         /// PHAssetMediaTypeImage + PHAssetMediaTypeVideo
     PSMediaTypeImage   = PHAssetMediaTypeImage,
     PSMediaTypeVideo   = PHAssetMediaTypeVideo,
 };
-
-#ifndef PSLog
-#ifdef DEBUG
-#define PSLog(format,...) NSLog(@"%s(Line %d): " format, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
-#else
-#define PSLog(format,...) do{}while(0)
-#endif
-#endif
 
 #endif /* PSPhotosDefines_h */

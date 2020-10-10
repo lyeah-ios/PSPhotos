@@ -7,6 +7,7 @@
 //
 
 #import "PhotosService.h"
+#import "PSDefines.h"
 #import "PSPhotosDefines.h"
 #import "PHAsset+PSExtends.h"
 #import "PHAssetCollection+PSExtends.h"
@@ -55,18 +56,37 @@ static NSString *const kPhotosServiceDefaultCacheDirectory = @"PSPhotos";
 
 + (void)requestAuthorization:(void (^)(PHAuthorizationStatus))handler
 {
-    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
-    if (status == PHAuthorizationStatusNotDetermined) {
-        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (handler) {
-                    handler(status);
-                }
-            });
-        }];
+    if (@available(iOS 14.0, *)) {
+        PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite];
+        if (status == PHAuthorizationStatusNotDetermined) {
+            /// 还没决定
+            [PHPhotoLibrary requestAuthorizationForAccessLevel:PHAccessLevelReadWrite handler:^(PHAuthorizationStatus status) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (handler) {
+                        handler(status);
+                    }
+                });
+            }];
+        } else {
+            if (handler) {
+                handler(status);
+            }
+        }
     } else {
-        if (handler) {
-            handler(status);
+        PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+        if (status == PHAuthorizationStatusNotDetermined) {
+            /// 还没决定
+            [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (handler) {
+                        handler(status);
+                    }
+                });
+            }];
+        } else {
+            if (handler) {
+                handler(status);
+            }
         }
     }
 }
@@ -190,7 +210,7 @@ static NSString *const kPhotosServiceDefaultCacheDirectory = @"PSPhotos";
 
 @implementation PhotosService (Photo)
 
-+ (void)saveImage:(UIImage *)image toAlbum:(NSString *_Nullable)albumName onCompletion:(void (^ _Nullable)(NSError *_Nullable))completion
++ (void)saveImage:(UIImage *)image toAlbum:(NSString *)albumName onCompletion:(void (^)(NSError * _Nullable))completion
 {
     if (!image) {
         if (completion) {
@@ -244,7 +264,7 @@ static NSString *const kPhotosServiceDefaultCacheDirectory = @"PSPhotos";
                     }
                 }];
             } else {
-                //保存失败
+                /// 保存失败
                 if (completion) {
                     NSString *errorMessage = error.localizedFailureReason;
                     if (errorMessage.length == 0) {
@@ -261,7 +281,7 @@ static NSString *const kPhotosServiceDefaultCacheDirectory = @"PSPhotos";
     }];
 }
 
-+ (void)saveImageData:(NSData *)imageData isGIF:(BOOL)isGIF toAlbum:(NSString *_Nullable)albumName onCompletion:(void (^ _Nullable)(NSError *_Nullable))completion
++ (void)saveImageData:(NSData *)imageData isGIF:(BOOL)isGIF toAlbum:(NSString *)albumName onCompletion:(void (^)(NSError * _Nullable))completion
 {
     if (!imageData || imageData.length == 0) {
         if (completion) {
@@ -311,7 +331,7 @@ static NSString *const kPhotosServiceDefaultCacheDirectory = @"PSPhotos";
                     }
                 }];
             } else {
-                //保存失败
+                /// 保存失败
                 if (completion) {
                     NSString *errorMessage = error.localizedFailureReason;
                     if (errorMessage.length == 0) {
@@ -328,7 +348,7 @@ static NSString *const kPhotosServiceDefaultCacheDirectory = @"PSPhotos";
     }];
 }
 
-+ (void)saveImageWithURL:(NSURL *)fileURL toAlbum:(NSString *_Nullable)albumName onCompletion:(void (^ _Nullable)(NSError *_Nullable))completion
++ (void)saveImageWithURL:(NSURL *)fileURL toAlbum:(NSString *)albumName onCompletion:(void (^)(NSError * _Nullable))completion
 {
     if (!fileURL) {
         if (completion) {
@@ -489,10 +509,25 @@ static NSString *const kPhotosServiceDefaultCacheDirectory = @"PSPhotos";
     return (status == PHAuthorizationStatusAuthorized);
 }
 
++ (BOOL)ps_isAlbumLimited
+{
+    if (@available(iOS 14.0, *)) {
+        PHAuthorizationStatus status = [self ps_albumAuthorizationStatus];
+        return (status == PHAuthorizationStatusLimited);
+    } else {
+        return NO;
+    }
+}
+
 + (PHAuthorizationStatus)ps_albumAuthorizationStatus
 {
-    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
-    return status;
+    if (@available(iOS 14.0, *)) {
+        PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatusForAccessLevel:PHAccessLevelReadWrite];
+        return status;
+    } else {
+        PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+        return status;
+    }
 }
 
 + (BOOL)ps_isCameraAuthorized

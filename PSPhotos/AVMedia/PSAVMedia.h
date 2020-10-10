@@ -1,15 +1,15 @@
 //
-//  PSAVFoundation.h
+//  PSAVMedia.h
 //  PSPhotos
 //
 //  Created by zisu on 2020/2/9.
 //  Copyright © 2020 zisu. All rights reserved.
 //
 
-#ifndef PSAVFoundation_h
-#define PSAVFoundation_h
+#ifndef PSAVMedia_h
+#define PSAVMedia_h
 
-#if __has_include(<PSPhotos/PSAVFoundation.h>)
+#if __has_include(<PSPhotos/PSAVMedia.h>)
 
 #import <PSPhotos/AVAsset+PSExtends.h>
 #import <PSPhotos/AVAsset+PSExport.h>
@@ -31,4 +31,4 @@
 
 #endif
 
-#endif /* PSPhotos_h */
+#endif /* PSAVMedia_h */

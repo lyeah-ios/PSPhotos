@@ -23,16 +23,15 @@ Pod::Spec.new do |s|
   
   # Photos
   s.subspec 'Photos' do |ss|
-    ss.source_files = 'PSPhotos/Photos/*.{h,m}'
+    ss.source_files = 'PSPhotos/Photos/*.{h,m}', 'PSPhotos/PSDefines.h'
+    ss.dependency 'PSPhotos/AVMedia'
     ss.frameworks = 'Photos', 'CoreServices'
     
   end
   
   # AVFoundation/MediaPlayer
   s.subspec 'AVMedia' do |ss|
-    ss.source_files = 'PSPhotos/AVFoundation/*.{h,m}'
-    
-    ss.dependency 'PSPhotos/Photos'
+    ss.source_files = 'PSPhotos/AVMedia/*.{h,m}', 'PSPhotos/PSDefines.h'
     ss.frameworks = 'AVFoundation', 'MediaPlayer'
     
   end

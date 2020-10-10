@@ -7,7 +7,7 @@
 //
 
 #import "PSAVAssetExportSession+PSExtends.h"
-#import "PSPhotosDefines.h"
+#import "PSDefines.h"
 
 /// Dummy class for category
 @interface PSAVAssetExportSession_PSExtends : NSObject @end

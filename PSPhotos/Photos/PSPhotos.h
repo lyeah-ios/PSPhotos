@@ -9,8 +9,9 @@
 #ifndef PSPhotos_h
 #define PSPhotos_h
 
-#if __has_include(<PSPhotos/PSAVFoundation.h>)
+#if __has_include(<PSPhotos/PSPhotos.h>)
 
+#import <PSPhotos/PSDefines.h>
 #import <PSPhotos/PSPhotosDefines.h>
 #import <PSPhotos/PhotosService.h>
 #import <PSPhotos/PHAsset+PSExtends.h>
@@ -19,6 +20,7 @@
 
 #else
 
+#import "PSDefines.h"
 #import "PSPhotosDefines.h"
 #import "PhotosService.h"
 #import "PHAsset+PSExtends.h"

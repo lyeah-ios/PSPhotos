@@ -18,13 +18,15 @@
 #import "MPNowPlayingInfoCenter+PSExtends.h"
 #import "PSAVAssetExportSession+PSExtends.h"
 #import "PSAVAssetExportSession.h"
-#import "PSAVFoundation.h"
+#import "PSAVMedia.h"
+#import "PSDefines.h"
 #import "PHAsset+PSExtends.h"
 #import "PHAssetCollection+PSExtends.h"
 #import "PHImageManager+PSExtends.h"
 #import "PhotosService.h"
 #import "PSPhotos.h"
 #import "PSPhotosDefines.h"
+#import "PSDefines.h"
 
 FOUNDATION_EXPORT double PSPhotosVersionNumber;
 FOUNDATION_EXPORT const unsigned char PSPhotosVersionString[];

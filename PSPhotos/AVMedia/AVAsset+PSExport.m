@@ -7,7 +7,7 @@
 //
 
 #import "AVAsset+PSExport.h"
-#import "PSPhotosDefines.h"
+#import "PSDefines.h"
 #import "AVAsset+PSExtends.h"
 #import <objc/runtime.h>
 #import "AVAssetExportSession+PSExtends.h"

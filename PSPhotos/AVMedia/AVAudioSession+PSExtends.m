@@ -7,7 +7,7 @@
 //
 
 #import "AVAudioSession+PSExtends.h"
-#import "PSPhotosDefines.h"
+#import "PSDefines.h"
 
 /// Dummy class for category
 @interface AVAudioSession_PSExtends : NSObject @end
