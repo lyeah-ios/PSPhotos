@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'PSPhotos'
-  s.version          = '0.2.0'
+  s.version          = '0.3.0'
   s.summary          = 'PSPhotos makes it easier to use Photos.framework to read and store images or videos.'
 
   s.homepage         = 'https://github.com/zisulu/PSPhotos'
