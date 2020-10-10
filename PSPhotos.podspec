@@ -28,8 +28,8 @@ Pod::Spec.new do |s|
     
   end
   
-  # AVFoundation
-  s.subspec 'AVFoundation' do |ss|
+  # AVFoundation/MediaPlayer
+  s.subspec 'AVMedia' do |ss|
     ss.source_files = 'PSPhotos/AVFoundation/*.{h,m}'
     
     ss.dependency 'PSPhotos/Photos'

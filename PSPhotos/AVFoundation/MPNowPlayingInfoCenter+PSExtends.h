@@ -3,7 +3,7 @@
 //  PSPhotos
 //
 //  Created by zisu on 2020/5/19.
-//  Copyright © 2020 lyeah. All rights reserved.
+//  Copyright © 2020 zisu. All rights reserved.
 //
 
 #import <MediaPlayer/MediaPlayer.h>

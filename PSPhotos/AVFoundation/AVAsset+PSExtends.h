@@ -52,6 +52,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (UIImage *_Nullable)ps_coverImage;
 
+/// 视频编码是否是 h.264
+- (BOOL)ps_isVideoCodecH264;
+
+/// 视频编码是否是 HEVC 即 h.265
+- (BOOL)ps_isVideoCodecHEVC;
+
 @end
 
 @interface AVURLAsset (PSExtends)
@@ -59,6 +65,22 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSNumber *ps_fileBytes;
 
 - (NSData *)ps_binaryData;
+
+@end
+
+@interface AVAssetTrack (PSExtends)
+
+/// formatDescription
+- (CMFormatDescriptionRef)ps_CMFormatDescriptionRef;
+
+/// mediaSubType
+- (CMVideoCodecType)ps_CMVideoCodecType;
+
+/// 视频编码是否是 h.264
+- (BOOL)ps_isVideoCodecH264;
+
+/// 视频编码是否是 HEVC 即 h.265
+- (BOOL)ps_isVideoCodecHEVC;
 
 @end
 

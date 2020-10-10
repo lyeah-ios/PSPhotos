@@ -3,10 +3,15 @@
 //  PSPhotos
 //
 //  Created by zisu on 2020/5/13.
-//  Copyright © 2020 lyeah. All rights reserved.
+//  Copyright © 2020 zisu. All rights reserved.
 //
 
 #import "AVAudioSession+PSExtends.h"
+#import "PSPhotosDefines.h"
+
+/// Dummy class for category
+@interface AVAudioSession_PSExtends : NSObject @end
+@implementation AVAudioSession_PSExtends @end
 
 @implementation AVAudioSession (PSExtends)
 
@@ -52,18 +57,18 @@
     NSError *error = nil;
     if (![audioSession.category isEqualToString:category]) {
         if (![audioSession setCategory:category error:&error]) {
-            LYHLog(@"setCategory:%@ error:%@", category, error);
+            PSLog(@"setCategory:%@ error:%@", category, error);
             return NO;
         }
     }
     if (active) {
         if (![audioSession setActive:YES error:&error]) {
-            LYHLog(@"setActive:YES error:%@", error);
+            PSLog(@"setActive:YES error:%@", error);
             return NO;
         }
     } else {
         if (![audioSession setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:&error]) {
-            LYHLog(@"setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:%@", error);
+            PSLog(@"setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:%@", error);
             return NO;
         }
     }
@@ -76,7 +81,7 @@
     NSError *error = nil;
     if (![audioSession.category isEqualToString:category]) {
         if (![audioSession setCategory:category error:&error]) {
-            LYHLog(@"setCategory:%@ error:%@", category, error);
+            PSLog(@"setCategory:%@ error:%@", category, error);
             return NO;
         }
     }

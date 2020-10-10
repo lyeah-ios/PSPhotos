@@ -12,6 +12,10 @@
 #import "PHImageManager+PSExtends.h"
 #import <CoreServices/CoreServices.h>
 
+/// Dummy class for category
+@interface PHAsset_PSExtends : NSObject @end
+@implementation PHAsset_PSExtends @end
+
 @implementation PHAsset (PSExtends)
 
 - (BOOL)ps_isGIF
@@ -37,7 +41,7 @@
     if (progressHandler) {
         [requestOptions setProgressHandler:^(double progress, NSError * _Nullable error, BOOL * _Nonnull stop, NSDictionary * _Nullable info) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSLog(@"正在从iCloud同步...%f", progress);
+                PSLog(@"正在从iCloud同步...%f", progress);
                 progressHandler(progress, error, stop, info);
             });
         }];
@@ -57,7 +61,7 @@
     if (progressHandler) {
         [requestOptions setProgressHandler:^(double progress, NSError * _Nullable error, BOOL * _Nonnull stop, NSDictionary * _Nullable info) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSLog(@"正在从iCloud同步...%f", progress);
+                PSLog(@"正在从iCloud同步...%f", progress);
                 progressHandler(progress, error, stop, info);
             });
         }];
@@ -73,7 +77,7 @@
     if (progressHandler) {
         [requestOptions setProgressHandler:^(double progress, NSError * _Nullable error, BOOL * _Nonnull stop, NSDictionary * _Nullable info) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSLog(@"正在从iCloud同步...%f", progress);
+                PSLog(@"正在从iCloud同步...%f", progress);
                 progressHandler(progress, error, stop, info);
             });
         }];
@@ -89,7 +93,7 @@
     if (progressHandler) {
         [requestOptions setProgressHandler:^(double progress, NSError * _Nullable error, BOOL * _Nonnull stop, NSDictionary * _Nullable info) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSLog(@"正在从iCloud同步...%f", progress);
+                PSLog(@"正在从iCloud同步...%f", progress);
                 progressHandler(progress, error, stop, info);
             });
         }];
@@ -141,7 +145,7 @@
         BOOL isCancelled = [mutableInfo[PHImageCancelledKey] boolValue];
         NSError *error  = mutableInfo[PHImageErrorKey];
         if (imageData && !isDegraded && !isCancelled && !error) {
-            CGFloat fileSize = imageData.length/(1024.0f * 1024.0f);
+            CGFloat fileSize = imageData.length/(1000.0f * 1000.0f);
             mutableInfo[@"fileSize"]    = @(fileSize);
             UIImage *resultImage = [UIImage imageWithData:imageData];
             dispatch_async(dispatch_get_main_queue(), ^{

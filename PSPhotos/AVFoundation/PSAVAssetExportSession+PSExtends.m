@@ -9,6 +9,10 @@
 #import "PSAVAssetExportSession+PSExtends.h"
 #import "PSPhotosDefines.h"
 
+/// Dummy class for category
+@interface PSAVAssetExportSession_PSExtends : NSObject @end
+@implementation PSAVAssetExportSession_PSExtends @end
+
 @implementation PSAVAssetExportSession (PSExtends)
 
 + (void)ps_exportAsset:(AVAsset *)asset onPrepare:(nonnull void (^)(PSAVAssetExportSession * _Nonnull))prepare onSuccess:(void (^ _Nullable)(PSAVAssetExportSession * _Nonnull, NSURL * _Nonnull))success onFailure:(void (^ _Nullable)(PSAVAssetExportSession * _Nonnull, NSError * _Nonnull))failure

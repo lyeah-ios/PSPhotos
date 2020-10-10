@@ -25,6 +25,10 @@ UIImageOrientation UIImageOrientationForCGImagePropertyOrientation(CGImageProper
     return orientation;
 }
 
+/// Dummy class for category
+@interface PHImageManager_PSExtends : NSObject @end
+@implementation PHImageManager_PSExtends @end
+
 @implementation PHImageManager (PSExtends)
 
 - (PHImageRequestID)ps_requestImageDataForAsset:(PHAsset *)asset options:(PHImageRequestOptions *)options resultHandler:(void (^)(NSData * _Nullable, NSString * _Nullable, UIImageOrientation, NSDictionary * _Nullable))resultHandler

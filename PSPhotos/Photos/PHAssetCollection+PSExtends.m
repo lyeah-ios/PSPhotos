@@ -8,6 +8,10 @@
 
 #import "PHAssetCollection+PSExtends.h"
 
+/// Dummy class for category
+@interface PHAssetCollection_PSExtends : NSObject @end
+@implementation PHAssetCollection_PSExtends @end
+
 @implementation PHAssetCollection (PSExtends)
 
 + (PHAssetCollection *)ps_fetchSmartAlbumUserLibrary
@@ -52,6 +56,33 @@
                 [mutableList addObject:album];
             }
         }
+    }
+    return [mutableList copy];
+}
+
++ (PHAssetCollection *)ps_fetchAlbumWithLocalIdentifier:(NSString *)localIdentifier
+{
+    if (localIdentifier.length == 0) {
+        return nil;
+    }
+    NSArray<PHAssetCollection *> *fetchResult = [self ps_fetchAlbumsWithLocalIdentifiers:@[localIdentifier]];
+    if (fetchResult.count > 0) {
+        PHAssetCollection *album = fetchResult.lastObject;
+        return album;
+    }
+    return nil;
+}
+
++ (NSArray<PHAssetCollection *> *)ps_fetchAlbumsWithLocalIdentifiers:(NSArray<NSString *> *)localIdentifiers
+{
+    NSMutableArray<PHAssetCollection *> *mutableList = [NSMutableArray array];
+    if (localIdentifiers.count == 0) {
+        return [mutableList copy];
+    }
+    PHFetchResult<PHAssetCollection *> *fetchResult = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:localIdentifiers options:nil];
+    for (PHAssetCollection *album in fetchResult) {
+        if (![album isKindOfClass:[PHAssetCollection class]]) continue;
+        [mutableList addObject:album];
     }
     return [mutableList copy];
 }

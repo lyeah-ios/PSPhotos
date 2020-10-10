@@ -17,18 +17,18 @@ NS_ASSUME_NONNULL_BEGIN
  requestOptions.deliveryMode = PHVideoRequestOptionsDeliveryModeHighQualityFormat;
  [requestOptions setProgressHandler:^(double progress, NSError * _Nullable error, BOOL * _Nonnull stop, NSDictionary * _Nullable info) {
  dispatch_async(dispatch_get_main_queue(), ^{
- NSLog(@"正在从iCloud同步...%f", progress);
+ PSLog(@"正在从iCloud同步...%f", progress);
  });
  }];
  [[PHImageManager defaultManager] requestAVAssetForVideo:model.asset options:requestOptions resultHandler:^(AVAsset * _Nullable asset, AVAudioMix * _Nullable audioMix, NSDictionary * _Nullable info) {
  if (asset && [asset isKindOfClass:[AVURLAsset class]]) {
- NSLog(@"视频信息%@ --- %@", info, [asset metadata]);
+ PSLog(@"视频信息%@ --- %@", info, [asset metadata]);
  [PSAVAssetExportSession ps_exportAsset:asset onPrepare:^(PSAVAssetExportSession * _Nonnull session) {
  AVURLAsset * urlAsset = (AVURLAsset *)session.asset;
  NSNumber * size = nil;
  [urlAsset.URL getResourceValue:&size forKey:NSURLFileSizeKey error:nil];
- CGFloat fileSize = [size floatValue]/(1024.0f * 1024.0f);
- NSLog(@"视频导出前的大小%@", @(fileSize));
+ CGFloat fileSize = [size floatValue]/(1000.0f * 1000.0f);
+ PSLog(@"视频导出前的大小%@", @(fileSize));
  NSInteger randomCode = arc4random() % 1000;
  NSTimeInterval interval = [[NSDate date] timeIntervalSince1970];
  NSString * uniqueRandomFileName = [NSString stringWithFormat:@"%f%@", interval, @(randomCode)];
@@ -64,24 +64,24 @@ NS_ASSUME_NONNULL_BEGIN
  };
  session.audioSettings = audioSettings;
  [session setProcessBlock:^(PSAVAssetExportSession * _Nonnull session, float progress) {
- NSLog(@"视频导出进度%@", @(progress));
+ PSLog(@"视频导出进度%@", @(progress));
  }];
  } onSuccess:^(PSAVAssetExportSession * _Nonnull session, NSURL * _Nonnull outputURL) {
  AVURLAsset *outputAsset = [AVURLAsset assetWithURL:outputURL];
  NSNumber *size = nil;
  [outputAsset.URL getResourceValue:&size forKey:NSURLFileSizeKey error:nil];
- CGFloat fileSize = [size floatValue]/(1024.0f * 1024.0f);
- NSLog(@"视频导出后的大小%@", @(fileSize));
+ CGFloat fileSize = [size floatValue]/(1000.0f * 1000.0f);
+ PSLog(@"视频导出后的大小%@", @(fileSize));
  [PhotosService saveVideoWithURL:outputURL toAlbum:@"视频转码" onCompletion:^(NSError * _Nullable error) {
  if (error) {
- NSLog(@"视频转码失败：%@", error);
+ PSLog(@"视频转码失败：%@", error);
  }
  }];
  } onFailure:^(PSAVAssetExportSession * _Nonnull session, NSError * _Nonnull error) {
- NSLog(@"视频导出失败%@", error);
+ PSLog(@"视频导出失败%@", error);
  }];
  } else {
- NSLog(@"视频获取失败%@", info);
+ PSLog(@"视频获取失败%@", info);
  }
  }];
  */

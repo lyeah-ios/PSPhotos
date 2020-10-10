@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (PHAssetCollection *)ps_fetchSmartAlbumUserLibrary;
 + (NSArray<PHAssetCollection *> *)ps_fetchAlbums:(PSMediaType)mediaType;
++ (nullable PHAssetCollection *)ps_fetchAlbumWithLocalIdentifier:(NSString *)localIdentifier;
++ (NSArray<PHAssetCollection *> *)ps_fetchAlbumsWithLocalIdentifiers:(NSArray<NSString *> *)localIdentifiers;
 
 @end
 

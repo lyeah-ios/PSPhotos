@@ -13,6 +13,10 @@
 #import "AVAssetExportSession+PSExtends.h"
 #import "PSAVAssetExportSession+PSExtends.h"
 
+/// Dummy class for category
+@interface AVAsset_PSExport : NSObject @end
+@implementation AVAsset_PSExport @end
+
 static const char PSSystemExportSessionKey = '\0';
 static const char PSCustomExportSessionKey = '\0';
 

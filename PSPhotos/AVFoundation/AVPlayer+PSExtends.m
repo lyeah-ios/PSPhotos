@@ -8,6 +8,10 @@
 
 #import "AVPlayer+PSExtends.h"
 
+/// Dummy class for category
+@interface AVPlayer_PSExtends : NSObject @end
+@implementation AVPlayer_PSExtends @end
+
 @implementation AVPlayer (PSExtends)
 
 - (BOOL)ps_isPlaying

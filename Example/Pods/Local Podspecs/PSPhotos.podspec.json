@@ -33,7 +33,7 @@
       ]
     },
     {
-      "name": "AVFoundation",
+      "name": "AVMedia",
       "source_files": "PSPhotos/AVFoundation/*.{h,m}",
       "dependencies": {
         "PSPhotos/Photos": [

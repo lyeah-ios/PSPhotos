@@ -1,30 +1,19 @@
 PODS:
-  - FBSnapshotTestCase (2.1.4):
-    - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
-  - FBSnapshotTestCase/Core (2.1.4)
-  - FBSnapshotTestCase/SwiftSupport (2.1.4):
-    - FBSnapshotTestCase/Core
-  - PSPhotos/AVFoundation (0.2.0):
+  - PSPhotos/AVMedia (0.2.0):
     - PSPhotos/Photos
   - PSPhotos/Photos (0.2.0)
 
 DEPENDENCIES:
-  - FBSnapshotTestCase
-  - PSPhotos/AVFoundation (from `../`)
+  - PSPhotos/AVMedia (from `../`)
   - PSPhotos/Photos (from `../`)
-
-SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - FBSnapshotTestCase
 
 EXTERNAL SOURCES:
   PSPhotos:
     :path: "../"
 
 SPEC CHECKSUMS:
-  FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
-  PSPhotos: 0aa4f1523beba1e153381a577a27a3356171e079
+  PSPhotos: 36b8bf831cc34000e6e0871a2206d99e0c79b9da
 
-PODFILE CHECKSUM: e0b99aad66f0f4a18522ba1514093d1aeee37afd
+PODFILE CHECKSUM: 0e40e52fc41e0cb5e56feb82a7edfc8e7d4cba29
 
 COCOAPODS: 1.9.1

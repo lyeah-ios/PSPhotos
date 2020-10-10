@@ -9,6 +9,10 @@
 #import "MPNowPlayingInfoCenter+PSExtends.h"
 #import "AVAudioSession+PSExtends.h"
 
+/// Dummy class for category
+@interface MPNowPlayingInfoCenter_PSExtends : NSObject @end
+@implementation MPNowPlayingInfoCenter_PSExtends @end
+
 @implementation MPNowPlayingInfoCenter (PSExtends)
 
 #pragma mark - 控制中心播放器
@@ -28,6 +32,9 @@
 {
     if (info && [info isKindOfClass:[NSDictionary class]]) {
         NSDictionary *nowInfo = [self ps_nowPlayerInfo];
+        if (!nowInfo) {
+            nowInfo = [NSDictionary dictionary];
+        }
         NSMutableDictionary *mutableInfo = [nowInfo mutableCopy];
         [info enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
             mutableInfo[key] = obj;

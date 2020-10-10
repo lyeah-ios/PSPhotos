@@ -7,8 +7,13 @@
 //
 
 #import "AVAsset+PSExtends.h"
+#import "PSPhotosDefines.h"
 #import <UIKit/UIKit.h>
 #import <objc/runtime.h>
+
+/// Dummy class for category
+@interface AVAsset_PSExtends : NSObject @end
+@implementation AVAsset_PSExtends @end
 
 static const char PSAVAssetFileBytesKey = '\0';
 
@@ -118,6 +123,26 @@ static const char PSAVAssetFileBytesKey = '\0';
     return currentFrame;
 }
 
+- (BOOL)ps_isVideoCodecH264
+{
+    BOOL isH264 = NO;
+    AVAssetTrack *videoAssetTrack = [self ps_videoAssetTrack];
+    if (videoAssetTrack) {
+        isH264 = videoAssetTrack.ps_isVideoCodecH264;
+    }
+    return isH264;
+}
+
+- (BOOL)ps_isVideoCodecHEVC
+{
+    BOOL isHEVC = NO;
+    AVAssetTrack *videoAssetTrack = [self ps_videoAssetTrack];
+    if (videoAssetTrack) {
+        isHEVC = videoAssetTrack.ps_isVideoCodecHEVC;
+    }
+    return isHEVC;
+}
+
 @end
 
 @implementation AVURLAsset (PSExtends)
@@ -143,9 +168,9 @@ static const char PSAVAssetFileBytesKey = '\0';
     NSData *binaryData = nil;
     if (self.URL) {
         NSError *error = nil;
-        //[NSData dataWithContentsOfFile:filePath options:NSDataReadingMappedIfSafe error:&error] 不能用在大于 200M的文件上，改用NSFileHandle
+        /// [NSData dataWithContentsOfFile:filePath options:NSDataReadingMappedIfSafe error:&error] 不能用在大于 200M的文件上，改用NSFileHandle
         NSUInteger fileSize = [self.ps_fileBytes unsignedIntegerValue];
-        if (fileSize > 16 * 1024 * 1024) {
+        if (fileSize > 16 * 1000.0f * 1000.0f) {
             NSError *readError = nil;
             NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingFromURL:self.URL error:&readError];
             if (fileHandle) {
@@ -157,7 +182,7 @@ static const char PSAVAssetFileBytesKey = '\0';
                     binaryData = [fileHandle readDataOfLength:fileSize];
                 }
             } else {
-                NSLog(@"%@", readError);
+                PSLog(@"%@", readError);
                 binaryData = [NSData dataWithContentsOfURL:self.URL options:NSDataReadingMappedAlways error:&error];
             }
         } else {
@@ -165,6 +190,40 @@ static const char PSAVAssetFileBytesKey = '\0';
         }
     }
     return binaryData;
+}
+
+@end
+
+@implementation AVAssetTrack (PSExtends)
+
+- (CMFormatDescriptionRef)ps_CMFormatDescriptionRef
+{
+    NSArray *formatDescriptions = [self formatDescriptions];
+    CMFormatDescriptionRef formatDescription = (__bridge CMFormatDescriptionRef)(formatDescriptions.firstObject);
+    return formatDescription;
+}
+
+- (CMVideoCodecType)ps_CMVideoCodecType
+{
+    CMFormatDescriptionRef formatDescription = [self ps_CMFormatDescriptionRef];
+    CMVideoCodecType codecType = CMVideoFormatDescriptionGetCodecType(formatDescription);
+    return codecType;
+}
+
+- (BOOL)ps_isVideoCodecH264
+{
+    BOOL isH264 = NO;
+    CMVideoCodecType codecType = [self ps_CMVideoCodecType];
+    isH264 = (codecType == kCMVideoCodecType_H264);
+    return isH264;
+}
+
+- (BOOL)ps_isVideoCodecHEVC
+{
+    BOOL isHEVC = NO;
+    CMVideoCodecType codecType = [self ps_CMVideoCodecType];
+    isHEVC = (codecType == kCMVideoCodecType_HEVC);
+    return isHEVC;
 }
 
 @end
