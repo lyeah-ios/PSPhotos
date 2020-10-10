@@ -6,7 +6,11 @@
 //  Copyright © 2019 zisu. All rights reserved.
 //
 
+#if __has_include(<PSPhotos/PSAVAssetExportSession.h>)
+#import <PSPhotos/PSAVAssetExportSession.h>
+#else
 #import "PSAVAssetExportSession.h"
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 

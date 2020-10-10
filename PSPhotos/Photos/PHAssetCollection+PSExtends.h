@@ -7,7 +7,11 @@
 //
 
 #import <Photos/Photos.h>
+#if __has_include(<PSPhotos/PSPhotosDefines.h>)
+#import <PSPhotos/PSPhotosDefines.h>
+#else
 #import "PSPhotosDefines.h"
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
