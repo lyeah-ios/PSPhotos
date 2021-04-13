@@ -37,7 +37,8 @@
       },
       "frameworks": [
         "Photos",
-        "CoreServices"
+        "CoreServices",
+        "PhotosUI"
       ]
     },
     {
@@ -48,7 +49,8 @@
       ],
       "frameworks": [
         "AVFoundation",
-        "MediaPlayer"
+        "MediaPlayer",
+        "AVKit"
       ]
     }
   ]

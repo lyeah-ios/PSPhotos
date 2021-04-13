@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)ps_isPlaying;
 
++ (BOOL)ps_isPictureInPictureSupported;
+
 @end
 
 NS_ASSUME_NONNULL_END

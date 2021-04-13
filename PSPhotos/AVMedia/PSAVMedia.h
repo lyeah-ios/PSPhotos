@@ -18,6 +18,7 @@
 #import <PSPhotos/AVAssetExportSession+PSExtends.h>
 #import <PSPhotos/PSAVAssetExportSession+PSExtends.h>
 #import <PSPhotos/MPNowPlayingInfoCenter+PSExtends.h>
+#import <PSPhotos/AVAssetImageGenerator+PSExtends.h>
 
 #else
 
@@ -28,6 +29,7 @@
 #import "AVAssetExportSession+PSExtends.h"
 #import "PSAVAssetExportSession+PSExtends.h"
 #import "MPNowPlayingInfoCenter+PSExtends.h"
+#import "AVAssetImageGenerator+PSExtends.h"
 
 #endif
 

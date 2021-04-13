@@ -7,6 +7,8 @@
 //
 
 #import "PSViewController.h"
+#import <PSPhotos/PSPhotos.h>
+#import <PSPhotos/PSAVMedia.h>
 
 @interface PSViewController ()
 

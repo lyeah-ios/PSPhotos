@@ -106,23 +106,6 @@ static const char PSAVAssetFileBytesKey = '\0';
     return frameRate;
 }
 
-- (UIImage *)ps_coverImage
-{
-    AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:self];
-    generator.appliesPreferredTrackTransform = YES;
-    float frameRate = [self ps_normalFrameRate];
-    Float64 seconds = 0;
-    //防止视频第一帧为黑屏，影响美观
-    if ([self ps_duration] >= 1) {
-        seconds = 1;
-    }
-    CMTime snaptime = CMTimeMakeWithSeconds(seconds, frameRate);
-    CMTime time2;
-    CGImageRef cgImageRef = [generator copyCGImageAtTime:snaptime actualTime:&time2 error:nil];
-    UIImage *currentFrame = [UIImage imageWithCGImage:cgImageRef];
-    return currentFrame;
-}
-
 - (BOOL)ps_isVideoCodecH264
 {
     BOOL isH264 = NO;
@@ -143,6 +126,18 @@ static const char PSAVAssetFileBytesKey = '\0';
     return isHEVC;
 }
 
+- (void)ps_checkAssetPlayable:(void (^)(BOOL))block
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL isPlayable = self.isPlayable;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (block) {
+                block(isPlayable);
+            }
+        });
+    });
+}
+
 @end
 
 @implementation AVURLAsset (PSExtends)
@@ -151,13 +146,7 @@ static const char PSAVAssetFileBytesKey = '\0';
 {
     NSNumber *fileBytes = (NSNumber *)objc_getAssociatedObject(self, &PSAVAssetFileBytesKey);
     if (!fileBytes) {
-        NSError *error = nil;
-        if (self.URL) {
-            [self.URL getResourceValue:&fileBytes forKey:NSURLFileSizeKey error:&error];
-        }
-        if (!fileBytes) {
-            fileBytes = @(0);
-        }
+        fileBytes = [self.URL ps_fileBytes];
         objc_setAssociatedObject(self, &PSAVAssetFileBytesKey, fileBytes, OBJC_ASSOCIATION_RETAIN);
     }
     return fileBytes;
@@ -167,12 +156,35 @@ static const char PSAVAssetFileBytesKey = '\0';
 {
     NSData *binaryData = nil;
     if (self.URL) {
+        binaryData = [self.URL ps_binaryData];
+    }
+    return binaryData;
+}
+
+@end
+
+@implementation NSURL (PSExtends)
+
+- (NSNumber *)ps_fileBytes
+{
+    NSNumber *fileBytes = @(0);
+    NSError *error = nil;
+    if ([self isFileURL]) {
+        [self getResourceValue:&fileBytes forKey:NSURLFileSizeKey error:&error];
+    }
+    return fileBytes;
+}
+
+- (NSData *)ps_binaryData
+{
+    NSData *binaryData = nil;
+    if ([self isFileURL]) {
         NSError *error = nil;
         /// [NSData dataWithContentsOfFile:filePath options:NSDataReadingMappedIfSafe error:&error] 不能用在大于 200M的文件上，改用NSFileHandle
         NSUInteger fileSize = [self.ps_fileBytes unsignedIntegerValue];
         if (fileSize > 16 * 1000.0f * 1000.0f) {
             NSError *readError = nil;
-            NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingFromURL:self.URL error:&readError];
+            NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingFromURL:self error:&readError];
             if (fileHandle) {
                 if (@available(iOS 13.0, *)) {
                     [fileHandle seekToOffset:0 error:&error];
@@ -183,10 +195,10 @@ static const char PSAVAssetFileBytesKey = '\0';
                 }
             } else {
                 PSLog(@"%@", readError);
-                binaryData = [NSData dataWithContentsOfURL:self.URL options:NSDataReadingMappedAlways error:&error];
+                binaryData = [NSData dataWithContentsOfURL:self options:NSDataReadingMappedAlways error:&error];
             }
         } else {
-            binaryData = [NSData dataWithContentsOfURL:self.URL options:NSDataReadingMappedAlways error:&error];
+            binaryData = [NSData dataWithContentsOfURL:self options:NSDataReadingMappedAlways error:&error];
         }
     }
     return binaryData;

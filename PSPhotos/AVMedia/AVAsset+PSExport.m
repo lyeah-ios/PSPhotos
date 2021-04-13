@@ -12,6 +12,7 @@
 #import <objc/runtime.h>
 #import "AVAssetExportSession+PSExtends.h"
 #import "PSAVAssetExportSession+PSExtends.h"
+#import "AVAssetImageGenerator+PSExtends.h"
 
 /// Dummy class for category
 @interface AVAsset_PSExport : NSObject @end
@@ -19,6 +20,7 @@
 
 static const char PSSystemExportSessionKey = '\0';
 static const char PSCustomExportSessionKey = '\0';
+static const char PSAVAssetImageGeneratorKey = '\0';
 
 @implementation AVAsset (PSExport)
 
@@ -166,8 +168,14 @@ static const char PSCustomExportSessionKey = '\0';
 
 - (NSDictionary *)ps_videoCompressSettings:(CGSize)targetSize averageBitRate:(CGFloat)averageBitRate normalFrameRate:(CGFloat)normalFrameRate
 {
+    NSString *codecType = @"";
+    if (@available(iOS 11.0, *)) {
+        codecType = AVVideoCodecTypeH264;
+    } else {
+        codecType = AVVideoCodecH264;
+    }
     NSDictionary *videoSettings = @{
-                                    AVVideoCodecKey                 : AVVideoCodecH264,
+                                    AVVideoCodecKey                 : codecType,
                                     AVVideoWidthKey                 : @(targetSize.width),
                                     AVVideoHeightKey                : @(targetSize.height),
                                     AVVideoScalingModeKey           : AVVideoScalingModeResizeAspectFill,
@@ -178,6 +186,69 @@ static const char PSCustomExportSessionKey = '\0';
                                             },
                                     };
     return videoSettings;
+}
+
+@end
+
+@implementation AVAsset (PSImageGenerator)
+
+- (void)setPs_imageGenerator:(AVAssetImageGenerator *)ps_imageGenerator
+{
+    objc_setAssociatedObject(self, &PSAVAssetImageGeneratorKey, ps_imageGenerator, OBJC_ASSOCIATION_RETAIN);
+}
+
+- (AVAssetImageGenerator *)ps_imageGenerator
+{
+    return (AVAssetImageGenerator *)objc_getAssociatedObject(self, &PSAVAssetImageGeneratorKey);
+}
+
+- (void)ps_generateImagesWithTimes:(NSArray<NSValue *> *)requestedTimes onPrepare:(void (^)(AVAssetImageGenerator * _Nonnull))prepare onSuccess:(void (^)(AVAssetImageGenerator * _Nonnull, UIImage * _Nonnull))success onFailure:(void (^)(AVAssetImageGenerator * _Nullable, NSError * _Nonnull))failure
+{
+    [AVAssetImageGenerator ps_generatorImagesWithAsset:self requestedTimes:requestedTimes onPrepare:^(AVAssetImageGenerator * _Nonnull generator) {
+        self.ps_imageGenerator = generator;
+        if (prepare) {
+            prepare(generator);
+        }
+    } onSuccess:^(AVAssetImageGenerator * _Nonnull generator, UIImage * _Nonnull resultImage) {
+        if (success) {
+            success(generator, resultImage);
+        }
+        self.ps_imageGenerator = nil;
+    } onFailure:^(AVAssetImageGenerator * _Nullable generator, NSError * _Nonnull error) {
+        if (failure) {
+            failure(generator, error);
+        }
+        self.ps_imageGenerator = nil;
+    }];
+}
+
+- (void)ps_cancelImageGeneration
+{
+    [self.ps_imageGenerator cancelAllCGImageGeneration];
+}
+
+- (UIImage *)ps_coverImage
+{
+    float frameRate = [self ps_normalFrameRate];
+    Float64 seconds = 0;
+    /// 防止视频第一帧为黑屏，影响美观
+    if ([self ps_duration] >= 1) {
+        seconds = 1;
+    }
+    CMTime snaptime = CMTimeMakeWithSeconds(seconds, frameRate);
+    UIImage *currentFrame = [self ps_screenshotAtTime:snaptime];
+    return currentFrame;
+}
+
+- (UIImage *)ps_screenshotAtTime:(CMTime)time
+{
+    AVAssetImageGenerator *generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:self];
+    generator.requestedTimeToleranceBefore = kCMTimeZero;
+    generator.requestedTimeToleranceAfter = kCMTimeZero;
+    generator.appliesPreferredTrackTransform = YES;
+    CGImageRef cgImageRef = [generator copyCGImageAtTime:time actualTime:&time error:nil];
+    UIImage *resultImage = [UIImage imageWithCGImage:cgImageRef];
+    return resultImage;
 }
 
 @end

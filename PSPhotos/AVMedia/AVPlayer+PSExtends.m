@@ -7,6 +7,7 @@
 //
 
 #import "AVPlayer+PSExtends.h"
+#import <AVKit/AVKit.h>
 
 /// Dummy class for category
 @interface AVPlayer_PSExtends : NSObject @end
@@ -21,6 +22,15 @@
         result = self.timeControlStatus == AVPlayerTimeControlStatusPlaying;
     } else {
         result = self.rate != 0;
+    }
+    return result;
+}
+
++ (BOOL)ps_isPictureInPictureSupported
+{
+    BOOL result = NO;
+    if (@available(iOS 11.0, *)) {
+        result = [AVPictureInPictureController isPictureInPictureSupported];
     }
     return result;
 }
