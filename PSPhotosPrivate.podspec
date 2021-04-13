@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'PSPhotosPrivate'
-  s.version          = '0.3.0'
+  s.version          = '0.4.0'
   s.summary          = 'PRIVATE:PSPhotos makes it easier to use Photos.framework to read and store images or videos.'
 
   s.homepage         = 'https://github.com/zisulu/PSPhotos'
@@ -25,14 +25,14 @@ Pod::Spec.new do |s|
   s.subspec 'Photos' do |ss|
     ss.source_files = 'PSPhotos/Photos/*.{h,m}', 'PSPhotos/PSDefines.h'
     ss.dependency 'PSPhotosPrivate/AVMedia'
-    ss.frameworks = 'Photos', 'CoreServices'
+    ss.frameworks = 'Photos', 'CoreServices', 'PhotosUI'
     
   end
   
   # AVFoundation/MediaPlayer
   s.subspec 'AVMedia' do |ss|
     ss.source_files = 'PSPhotos/AVMedia/*.{h,m}', 'PSPhotos/PSDefines.h'
-    ss.frameworks = 'AVFoundation', 'MediaPlayer'
+    ss.frameworks = 'AVFoundation', 'MediaPlayer', 'AVKit'
     
   end
   
